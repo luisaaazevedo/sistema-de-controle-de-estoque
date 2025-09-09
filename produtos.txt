@@ -1,0 +1,5 @@
+Nome,Preco,quantidade
+maça,2.00,8
+banana,1.00,6
+m,0.00,1
+melancia,7.00,4
