@@ -26,12 +26,12 @@ class Produto:
     
 @dataclass
 class Venda:
-    data: datetime
+    data_iso: datetime
     produto: str
     quantidade: int
     valor_total: float
     def to_row(self) -> List[str]:
-        return [self.data.isoformat(), self.produto, str(self.quantidade), f"{self.valor_total:.2f}"]
+        return [self.data_iso.isoformat(), self.produto, str(self.quantidade), f"{self.valor_total:.2f}"]
    
     @staticmethod
     def from_row(row: List[str])  -> "Venda":
@@ -98,7 +98,7 @@ def get_vendas() -> list[Venda]:
     return carregar_vendas()
 
 st.set_page_config(page_title="Controle de estoque", layout="wide")
-st.title("Sistema de controle de estoque")
+st.title(" Sistema de controle de estoque")
 
 menu = st.sidebar.radio("Navegação", ["cadastro de produtos", "registro de vendas", "relatórios"])
 
@@ -175,10 +175,10 @@ elif menu == "relatórios":
         st.info("Nenhum produto cadastrado.")
     st.subheader("Histórico de vendas")
     if vendas:
-        vendasordenadas = sorted(vendas, key=lambda v: v.data, reverse=True)
+        vendasordenadas = sorted(vendas, key=lambda v: v.data_iso, reverse=True)
         df_vendas = [
             {
-                "Data": v.data.strftime("%Y-%m-%d %H:%M:%S"),
+                "Data": v.data_iso.strftime("%Y-%m-%d %H:%M:%S"),
                 "Produto": v.produto,
                 "Quantidade": v.quantidade,
                 "Valor total R$": f"{v.valor_total:.2f}"
@@ -206,13 +206,14 @@ elif menu == "relatórios":
         st.subheader("Estoque atual por produto")
         st.bar_chart(df_produtos.set_index("Nome")["Quantidade"])
     if vendas:
-        df_vendas_graf = pd.DataFrame([{"Data": v.data, "Valor total": v.valor_total} for v in vendas])
+        df_vendas_graf = pd.DataFrame([{"Data": v.data_iso, "Valor total": v.valor_total} for v in vendas])
         df_vendas_graf["Data"] = pd.to_datetime(df_vendas_graf["Data"])
         vendapord = df_vendas_graf.groupby(df_vendas_graf["Data"].dt.date)["Valor total"].sum().reset_index()
         vendapord.set_index("Data", inplace=True)
 
-        st.subheader("Evolução das vendas")
+        st.subheader(" 📈 Evolução das vendas")
         st.line_chart(vendapord)
     st.markdown("---")
     st.caption(f"Arquivos persistente: '{PRODUTOS_FILE}', '{VENDAS_FILE}' ")
+
                                    
