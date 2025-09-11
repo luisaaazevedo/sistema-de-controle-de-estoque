@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import List, Optional
 import streamlit as st
 import pandas as pd
+from produto import Produto
+from venda import Venda
 
 PRODUTOS_FILE = "produtos.txt"
 VENDAS_FILE = "vendas.txt"
@@ -12,35 +14,7 @@ VENDAS_FILE = "vendas.txt"
 HEADERS_PRODUTOS = ["Nome", "Preco", "quantidade"]
 HEADERS_VENDAS = ["Data_iso", "Produto", "Quantidade", "Valor_total"]
 
-@dataclass
-class Produto:
-    nome: str
-    preco: float
-    quantidade: int
-    def to_row(self) -> List[str]:
-        return [self.nome, f"{self.preco:.2f}", str(self.quantidade)]
-   
-    @staticmethod
-    def from_row(row: List[str])  -> "Produto":
-        return Produto(row[0], float(row[1]), int(row[2]))
     
-@dataclass
-class Venda:
-    data_iso: datetime
-    produto: str
-    quantidade: int
-    valor_total: float
-    def to_row(self) -> List[str]:
-        return [self.data_iso.isoformat(), self.produto, str(self.quantidade), f"{self.valor_total:.2f}"]
-   
-    @staticmethod
-    def from_row(row: List[str])  -> "Venda":
-        return Venda(
-            datetime.fromisoformat(row[0]),
-            row[1],
-            int(row[2]),
-            float(row[3])
-        )
 def ensure_files() -> None:
     if not os.path.exists(PRODUTOS_FILE):
         with open(PRODUTOS_FILE, "w", newline='', encoding='utf-8') as f:
@@ -217,3 +191,4 @@ elif menu == "relatórios":
     st.caption(f"Arquivos persistente: '{PRODUTOS_FILE}', '{VENDAS_FILE}' ")
 
                                    
+
