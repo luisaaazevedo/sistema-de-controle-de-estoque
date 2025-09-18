@@ -12,7 +12,7 @@ from cliente import Cliente
 
 PRODUTOS_FILE = "produtos.txt"
 VENDAS_FILE = "vendas.txt"
-CLIENTES_FILE = "CLIENTES.txt"
+CLIENTES_FILE = "clientes.txt"
 
 HEADERS_PRODUTOS = ["Nome", "Preco", "quantidade"]
 HEADERS_VENDAS = ["Data_iso", "Produto", "Quantidade", "Valor_total", "CPF-cliente"]
@@ -263,3 +263,4 @@ elif menu == "relatórios":
         st.line_chart(vendapord)
     st.markdown("---")
     st.caption(f"Arquivos persistente: '{PRODUTOS_FILE}', '{VENDAS_FILE}' ")
+
